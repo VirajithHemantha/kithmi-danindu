@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, MapPin, Calendar, Clock } from "lucide-react";
+import { Sparkles, MapPin, Calendar, Clock, Volume2, VolumeX } from "lucide-react";
 
 /**
  * Premium Sri Lankan Wedding Invitation Theme
@@ -11,6 +11,7 @@ import { Sparkles, MapPin, Calendar, Clock } from "lucide-react";
 
 const mandalaImage = "/images/mandala_gold.png";
 const brideGroomImage = "/images/10.png";
+const musicFile = "/marindalcrew_a-thousand-years-cristina-perri-mp3 (1).mp3";
 
 type InviteImageProps = React.ComponentProps<"img"> & {
   eager?: boolean;
@@ -201,6 +202,28 @@ function CountdownTimer() {
 export default function WeddingInvitation() {
   const [isOpened, setIsOpened] = useState(false);
   const [isLowPerformanceMode, setIsLowPerformanceMode] = useState(false);
+  const invitationAudioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Handle Music Auto-play on Open
+  useEffect(() => {
+    if (isOpened && invitationAudioRef.current) {
+      invitationAudioRef.current.play().catch(err => console.log("Autoplay blocked:", err));
+      setIsPlaying(true);
+    }
+  }, [isOpened]);
+
+  const toggleMusic = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (invitationAudioRef.current) {
+      if (isPlaying) {
+        invitationAudioRef.current.pause();
+      } else {
+        invitationAudioRef.current.play().catch(err => console.error("Playback failed:", err));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   // RSVP Form State
   const [rsvpData, setRsvpData] = useState({
@@ -284,6 +307,8 @@ export default function WeddingInvitation() {
     }
   };
 
+
+
   useEffect(() => {
     const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
     const connection = (navigator as Navigator & {
@@ -320,6 +345,25 @@ export default function WeddingInvitation() {
       className={`h-[100dvh] w-full bg-[#fdfaf5] transition-all duration-1000 ${isOpened ? "overflow-y-auto overflow-x-hidden smooth-mobile-scroll" : "overflow-hidden flex items-center justify-center"
         } relative font-montserrat scroll-smooth`}
     >
+      <audio ref={invitationAudioRef} src={musicFile} loop />
+
+      {/* Music Toggle Button */}
+      {isOpened && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          onClick={() => toggleMusic()}
+          className="fixed bottom-6 right-6 z-[60] bg-white/80 backdrop-blur-md p-4 rounded-full shadow-2xl border border-theme-200 text-theme-800 hover:bg-theme-50 transition-all group"
+          aria-label={isPlaying ? "Mute Music" : "Play Music"}
+        >
+          {isPlaying ? (
+            <Volume2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          ) : (
+            <VolumeX className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          )}
+        </motion.button>
+      )}
+
       <MandalaFrame minimal={isLowPerformanceMode} />
       <FloatingPetals disabled={isLowPerformanceMode} />
 
@@ -453,17 +497,29 @@ export default function WeddingInvitation() {
             animate={{ opacity: 1 }}
             className="website-shell relative z-20 w-full"
           >
-            {/* Sticky Return Button */}
-            <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              onClick={() => setIsOpened(false)}
-              className="fixed top-6 right-6 z-50 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg border border-theme-100 text-theme-800 hover:bg-theme-50 transition-colors"
-            >
-              <div className="flex flex-col items-center">
-                <div className="text-[8px] uppercase tracking-widest font-bold">Close</div>
-              </div>
-            </motion.button>
+            {/* Sticky Controls */}
+            <div className="fixed top-6 right-6 z-50 flex flex-col gap-3">
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                onClick={() => setIsOpened(false)}
+                className="bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg border border-theme-100 text-theme-800 hover:bg-theme-50 transition-colors"
+              >
+                <div className="flex flex-col items-center">
+                  <div className="text-[8px] uppercase tracking-widest font-bold">Close</div>
+                </div>
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                onClick={() => toggleMusic()}
+                className="bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg border border-theme-100 text-theme-800 hover:bg-theme-50 transition-colors"
+              >
+                {!isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </motion.button>
+            </div>
 
             {/* Hero Section */}
             <section className="min-h-[100dvh] w-full flex items-center justify-center p-4 md:p-12 relative overflow-hidden bg-[#fdfaf5]">
@@ -895,7 +951,7 @@ export default function WeddingInvitation() {
                     <div className="h-px w-16 md:w-24 bg-gradient-to-l from-transparent to-theme-300" />
                   </div>
                   <p className="text-stone-300 text-sm md:text-base max-w-md mx-auto leading-relaxed mb-16 tracking-wide font-light">
-                    We would be absolutely thrilled to celebrate with you. Kindly respond by the end of June.
+                    We would be absolutely thrilled to celebrate with you. Kindly respond by July.
                   </p>
 
                   {/* Premium RSVP Form */}
@@ -1106,6 +1162,6 @@ export default function WeddingInvitation() {
           border-radius: 10px;
         }
       `}} />
-    </main>
+    </main >
   );
 }
