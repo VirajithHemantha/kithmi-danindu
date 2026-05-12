@@ -27,6 +27,17 @@ function InviteImage({ eager = false, loading, decoding, ...props }: InviteImage
   );
 }
 
+const CornerOrnament = ({ className, style }: { className?: string, style?: React.CSSProperties }) => (
+  <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} style={style}>
+    <path d="M 0 0 L 0 50 C 30 50 50 70 50 100 L 70 100 C 70 50 50 0 0 0 Z" fill="currentColor" />
+    <path d="M 0 60 L 0 80 C 40 80 60 100 60 140 L 70 140 C 70 90 50 60 0 60 Z" fill="currentColor" opacity="0.6" />
+    <path d="M 0 100 L 0 110 C 20 110 30 120 30 140 L 40 140 C 40 110 30 100 0 100 Z" fill="currentColor" opacity="0.4" />
+    <circle cx="15" cy="15" r="6" fill="currentColor" />
+    <circle cx="25" cy="35" r="4" fill="currentColor" opacity="0.8" />
+    <circle cx="35" cy="25" r="4" fill="currentColor" opacity="0.8" />
+  </svg>
+);
+
 
 function FloatingPetals({ disabled = false }: { disabled?: boolean }) {
   const [isLowPowerMode, setIsLowPowerMode] = useState(false);
@@ -345,108 +356,26 @@ export default function WeddingInvitation() {
         {!isOpened ? (
           <motion.div
             key="envelope-stage"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              scale: 1.1,
+              scale: 1.05,
               transition: { duration: 0.8, ease: "easeInOut" }
             }}
-            className="flex flex-col items-center justify-center p-6 relative z-10 w-full"
+            className="flex flex-col items-center justify-center relative z-10 w-full h-[100dvh] bg-[#FDFBF7] overflow-hidden cursor-pointer"
+            onClick={() => setIsOpened(true)}
           >
-            {/* Title */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-              <span className="inline-block px-5 py-2 rounded-full bg-theme-50 border border-theme-200 text-[10px] uppercase tracking-[0.5em] text-theme-700 font-bold mb-6">
-                Save the Date
-              </span>
-              <h1 className="font-cinzel text-4xl md:text-5xl bg-gradient-to-br from-gold via-theme-400 to-theme-700 bg-clip-text text-transparent mb-4 tracking-tight font-bold drop-shadow-sm">
-                Kithmi & Danindu
-              </h1>
-              <p className="text-gold text-sm tracking-[0.4em] font-bold">JUNE 25, 2026</p>
-            </motion.div>
-
-            {/* Gatefold Envelope */}
-            <div
-              className="relative w-full max-w-[430px] aspect-[1/1.42] flex items-center justify-center group cursor-pointer perspective-1000"
-              onClick={() => setIsOpened(true)}
-            >
-              <div className="absolute -inset-8 bg-[radial-gradient(circle,_rgba(212,175,55,0.25)_0%,_rgba(255,253,245,0.2)_45%,_transparent_75%)] blur-3xl opacity-90" />
-              <div className="absolute inset-0 rounded-[1.4rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] border border-gold/30 overflow-hidden">
-                <InviteImage src="/en.jpeg" className="w-full h-full object-cover opacity-90" alt="" />
-                <div className="absolute inset-0 opacity-[0.05] paper-grain-strong mix-blend-multiply" />
-              </div>
-
-              {/* Premium Multi-Layered Borders */}
-              <div className="absolute inset-[10px] rounded-[1.1rem] border-[1.5px] border-gold/40 pointer-events-none z-20" />
-              <div className="absolute inset-[14px] rounded-[0.95rem] border-[0.5px] border-gold/20 pointer-events-none z-20" />
-              <div className="absolute inset-[18px] rounded-[0.85rem] border-[0.5px] border-gold/10 pointer-events-none z-20" />
-
-              {/* Elegant Corner Flourishes */}
-              <div className="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-gold/60 rounded-tl-lg z-20 opacity-80" />
-              <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-gold/60 rounded-tr-lg z-20 opacity-80" />
-              <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-gold/60 rounded-bl-lg z-20 opacity-80" />
-              <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-gold/60 rounded-br-lg z-20 opacity-80" />
-
-              {/* Small Decorative Dots in Corners */}
-              <div className="absolute top-[18px] left-[18px] w-1.5 h-1.5 bg-gold/50 rounded-full z-20" />
-              <div className="absolute top-[18px] right-[18px] w-1.5 h-1.5 bg-gold/50 rounded-full z-20" />
-              <div className="absolute bottom-[18px] left-[18px] w-1.5 h-1.5 bg-gold/50 rounded-full z-20" />
-              <div className="absolute bottom-[18px] right-[18px] w-1.5 h-1.5 bg-gold/50 rounded-full z-20" />
-
-              <motion.div
-                initial={{ opacity: 0.15, x: -140 }}
-                animate={{ opacity: [0.08, 0.2, 0.08], x: [-160, 260, -160] }}
-                transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent blur-lg z-20 pointer-events-none"
-              />
-
-              <div className="absolute top-[-1px] left-1/2 -translate-x-1/2 w-[88%] h-[44%] bg-gradient-to-b from-theme-100/90 to-theme-50/60 clip-path-envelope z-10" />
-              <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-[84%] h-[39%] border border-theme-300/45 clip-path-envelope z-10 opacity-60" />
-
-              {/* Left Flap */}
-              <motion.div
-                className="absolute inset-y-0 left-0 w-1/2 z-30 shadow-[8px_0_28px_rgba(153,101,21,0.25)] origin-left flex items-center justify-end overflow-hidden rounded-l-[1.2rem]"
-                whileHover={{ rotateY: -14 }}
-                transition={{ type: "spring", stiffness: 110, damping: 16 }}
-              >
-                <div className="absolute inset-y-0 left-0 w-[200%]">
-                  <InviteImage src="/en.jpeg" className="w-full h-full object-cover opacity-90" alt="" />
-                  <div className="absolute inset-0 opacity-[0.05] paper-grain-strong mix-blend-multiply" />
-                </div>
-                {/* Flap Borders */}
-                <div className="absolute inset-[8px] border-[1.5px] border-gold/40 rounded-l-[1rem] pointer-events-none" />
-                <div className="absolute inset-[12px] border-[0.5px] border-gold/20 rounded-l-[0.8rem] pointer-events-none" />
-                
-                {/* Left Side Flourishes */}
-                <div className="absolute top-4 left-4 w-10 h-10 border-t-2 border-l-2 border-gold/60 rounded-tl-lg pointer-events-none" />
-                <div className="absolute bottom-4 left-4 w-10 h-10 border-b-2 border-l-2 border-gold/60 rounded-bl-lg pointer-events-none" />
-                
-                <div className="absolute inset-0 border-[0.5px] border-gold/30 rounded-l-[1.2rem] pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-theme-200 via-theme-400 to-theme-200 opacity-20" />
-              </motion.div>
-
-              {/* Right Flap */}
-              <motion.div
-                className="absolute inset-y-0 right-0 w-1/2 z-30 shadow-[-8px_0_28px_rgba(153,101,21,0.25)] origin-right flex items-center justify-start overflow-hidden rounded-r-[1.2rem]"
-                whileHover={{ rotateY: 14 }}
-                transition={{ type: "spring", stiffness: 110, damping: 16 }}
-              >
-                <div className="absolute inset-y-0 right-0 w-[200%]">
-                  <InviteImage src="/en.jpeg" className="w-full h-full object-cover opacity-90" alt="" />
-                  <div className="absolute inset-0 opacity-[0.05] paper-grain-strong mix-blend-multiply" />
-                </div>
-                {/* Flap Borders */}
-                <div className="absolute inset-[8px] border-[1.5px] border-gold/40 rounded-r-[1rem] pointer-events-none" />
-                <div className="absolute inset-[12px] border-[0.5px] border-gold/20 rounded-r-[0.8rem] pointer-events-none" />
-                
-                {/* Right Side Flourishes */}
-                <div className="absolute top-4 right-4 w-10 h-10 border-t-2 border-r-2 border-gold/60 rounded-tr-lg pointer-events-none" />
-                <div className="absolute bottom-4 right-4 w-10 h-10 border-b-2 border-r-2 border-gold/60 rounded-br-lg pointer-events-none" />
-                
-                <div className="absolute inset-0 border-[0.5px] border-gold/30 rounded-r-[1.2rem] pointer-events-none" />
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-theme-200 via-theme-400 to-theme-200 opacity-20" />
-              </motion.div>
+            <div className="absolute inset-0 z-0">
+              <InviteImage src="/d.png" className="w-full h-full object-fill md:object-cover" alt="Tap to open" />
             </div>
+            <motion.div
+              animate={{ opacity: [0.3, 0.8, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute bottom-12 md:bottom-16 z-10 bg-black/40 backdrop-blur-sm text-white px-6 py-2 rounded-full tracking-[0.2em] uppercase text-[10px] font-bold shadow-lg"
+            >
+              Tap to Open
+            </motion.div>
           </motion.div>
         ) : (
           <motion.div
@@ -483,10 +412,10 @@ export default function WeddingInvitation() {
             <section className="min-h-[100dvh] w-full flex items-center justify-center relative overflow-hidden bg-[#FFFFFF]">
               {/* Full Hero Background Image */}
               <div className="absolute inset-0 z-0">
-                <InviteImage 
-                  src="/bo.png" 
-                  className="w-full h-full object-contain" 
-                  alt="Hero Background" 
+                <InviteImage
+                  src="/bo.png"
+                  className="w-full h-full object-contain"
+                  alt="Hero Background"
                 />
               </div>
 
@@ -617,7 +546,11 @@ export default function WeddingInvitation() {
                     <div className="relative z-10 space-y-4 py-8 md:py-12">
                       <div className="space-y-2">
                         <p className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] font-bold text-stone-400">Loving daughter of</p>
-                        <p className="text-xs md:text-sm font-cinzel text-stone-600 tracking-wide leading-relaxed">Mr. Kithsiri Maldeniya<br />& Mrs. Priyanka Dias</p>
+                        <p className="text-xs md:text-sm font-cinzel text-stone-600 tracking-wide leading-relaxed">
+                          Mr. Kithsiri Maldeniya<br />
+                          &<br />
+                          Mrs. Priyanka Dias
+                        </p>
                       </div>
                       <h3 className="text-5xl md:text-7xl font-playball text-theme-800 group-hover:scale-110 transition-transform duration-700 pt-6 drop-shadow-sm">Kithmi</h3>
                     </div>
@@ -651,7 +584,11 @@ export default function WeddingInvitation() {
                     <div className="relative z-10 space-y-4 py-8 md:py-12">
                       <div className="space-y-2">
                         <p className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] font-bold text-stone-400">Loving son of</p>
-                        <p className="text-xs md:text-sm font-cinzel text-stone-600 tracking-wide leading-relaxed">Mr. Indika Sarathchandra<br />& Mrs. D.V. Geethanjali Dammika</p>
+                        <p className="text-xs md:text-sm font-cinzel text-stone-600 tracking-wide leading-relaxed">
+                          Mr. Indika Sarathchandra<br />
+                          &<br />
+                          Mrs. D.V. Geethanjali Dammika
+                        </p>
                       </div>
                       <h3 className="text-5xl md:text-7xl font-playball text-theme-800 group-hover:scale-110 transition-transform duration-700 pt-6 drop-shadow-sm">Danindu</h3>
                     </div>
@@ -691,26 +628,18 @@ export default function WeddingInvitation() {
                       <Clock className="w-6 h-6 md:w-8 md:h-8 text-theme-500 mb-4 opacity-80" />
                       <p className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-stone-400 font-bold mb-3">The Time</p>
                       <p className="font-cinzel text-xl md:text-3xl text-theme-900 tracking-widest font-bold whitespace-nowrap">09:00 AM</p>
-                      <p className="font-cinzel text-xs md:text-sm text-theme-600 tracking-[0.2em] mt-3 uppercase">Poruwa Ceremony</p>
+                      <p className="font-cinzel text-xs md:text-sm text-theme-600 tracking-[0.2em] mt-3 uppercase">To 04:00 PM</p>
                     </div>
+                  </div>
 
-                    <div className="hidden md:flex flex-col items-center gap-3">
-                      <div className="w-px h-12 bg-theme-200" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-theme-400" />
-                      <div className="w-px h-12 bg-theme-200" />
-                    </div>
-
-                    <div className="md:hidden flex flex-row items-center gap-3">
-                      <div className="h-px w-10 bg-theme-200" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-theme-400" />
-                      <div className="h-px w-10 bg-theme-200" />
-                    </div>
-
-                    <div className="flex flex-col items-center flex-1">
-                      <Clock className="w-6 h-6 md:w-8 md:h-8 text-theme-500 mb-4 opacity-80" />
-                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-stone-400 font-bold mb-3">The Time</p>
-                      <p className="font-cinzel text-xl md:text-3xl text-theme-900 tracking-widest font-bold whitespace-nowrap">04:00 PM</p>
-                      <p className="font-cinzel text-xs md:text-sm text-theme-600 tracking-[0.2em] mt-3 uppercase">Conclusion</p>
+                  <div className="pt-8 w-full px-4">
+                    <div className="relative inline-flex items-center justify-center w-full max-w-md mx-auto group">
+                      <div className="absolute inset-0 bg-theme-100 blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+                      <p className="relative text-theme-800 bg-white shadow-[0_4px_20px_-5px_rgba(0,0,0,0.05)] text-[9px] md:text-[11px] font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase px-6 lg:px-10 py-4 lg:py-5 rounded-full border border-theme-200 flex items-center justify-center gap-4 w-full md:w-auto">
+                        <span className="w-1.5 h-1.5 rotate-45 bg-theme-500 shrink-0" />
+                        <span className="whitespace-nowrap">Poruwa Ceremony at 09:00 AM</span>
+                        <span className="w-1.5 h-1.5 rotate-45 bg-theme-500 shrink-0" />
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -781,33 +710,28 @@ export default function WeddingInvitation() {
                     </div>
 
                     <div className="space-y-10 w-full">
-                      {/* Location 1: Church */}
+                      {/* Location */}
                       <div className="relative pl-10 border-l border-theme-200">
                         <div className="absolute -left-5 top-0 w-10 h-10 rounded-full bg-white shadow-sm border border-theme-100 flex items-center justify-center">
                           <MapPin className="w-4 h-4 text-theme-500" />
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-3">
-                            <span className="px-3 py-1 rounded-full bg-theme-50 text-[10px] font-bold text-theme-700 border border-theme-100 uppercase tracking-widest">09:00 AM</span>
-                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Poruwa Ceremony</span>
+                        <div className="space-y-6">
+                          <div>
+                            <h3 className="font-cinzel text-xl md:text-2xl text-stone-800 font-bold tracking-wide">Seethawaka Regency<br /><span className="text-lg md:text-xl text-theme-600 font-normal">(Grand Ballroom)</span></h3>
+                            <p className="text-stone-500 text-sm md:text-base font-light tracking-wide mt-2">No:-295, Avissawella Road, Avissawella.</p>
                           </div>
-                          <h3 className="font-cinzel text-xl md:text-2xl text-stone-800 font-bold tracking-wide">Seethawaka Regency<br /><span className="text-lg md:text-xl text-theme-600 font-normal">(Grand Ballroom)</span></h3>
-                          <p className="text-stone-500 text-sm md:text-base font-light tracking-wide">No:-295, Avissawella Road, Avissawella.</p>
-                        </div>
-                      </div>
 
-                      {/* Location 2: Grandeeza */}
-                      <div className="relative pl-10 border-l border-theme-200">
-                        <div className="absolute -left-5 top-0 w-10 h-10 rounded-full bg-theme-800 shadow-sm flex items-center justify-center">
-                          <MapPin className="w-4 h-4 text-white" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-3">
-                            <span className="px-3 py-1 rounded-full bg-stone-100 text-[10px] font-bold text-stone-700 border border-stone-200 uppercase tracking-widest">04:00 PM</span>
-                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Conclusion</span>
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                              <span className="px-3 py-1 rounded-full bg-theme-50 text-[10px] font-bold text-theme-700 border border-theme-100 uppercase tracking-widest">09:00 AM</span>
+                              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Poruwa Ceremony</span>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <span className="px-3 py-1 rounded-full bg-stone-100 text-[10px] font-bold text-stone-700 border border-stone-200 uppercase tracking-widest">04:00 PM</span>
+                              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Conclusion</span>
+                            </div>
                           </div>
-                          <h3 className="font-cinzel text-xl md:text-2xl text-stone-800 font-bold tracking-wide">Seethawaka Regency<br /><span className="text-lg md:text-xl text-theme-600 font-normal">(Grand Ballroom)</span></h3>
-                          <p className="text-stone-500 text-sm md:text-base font-light tracking-wide">Avissawella.</p>
                         </div>
                       </div>
                     </div>
@@ -977,7 +901,7 @@ export default function WeddingInvitation() {
                     className="flex flex-col items-center"
                   >
                     <div className="mt-12 md:mt-24 space-y-6 flex flex-col items-center relative w-full">
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-playball text-[22vw] md:text-[220px] text-theme-100/40 whitespace-nowrap pointer-events-none z-0 select-none">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-playball text-[22vw] md:text-[220px] text-theme-300/60 drop-shadow-sm whitespace-nowrap pointer-events-none z-0 select-none">
                         Thank You
                       </div>
                       <p className="text-[9px] md:text-[11px] uppercase tracking-[0.8em] text-theme-600 font-bold relative z-10 bg-[#FFFFFF] px-6 py-2 rounded-full border border-theme-100/50 shadow-sm">With Love</p>
